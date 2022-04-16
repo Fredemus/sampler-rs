@@ -1,0 +1,213 @@
+/* * {
+
+    border-width: 1px;
+    border-color: red;
+} */
+/* https://mycolor.space */
+.container {
+    /* border-width: 1px;
+    border-color: red; */
+    background-color: #191919;
+    /* child-space: 1s; */
+    child-space: 5px;
+    /* child-space: 10px; */
+    row-between: 5px;
+    /* top: 0px; */
+}
+
+.sparse_knobs {
+    width: 1s;
+    /* left: 5px;
+    right: 5px; */
+    /* child-space: 1s; */
+    /* child-space: 1 */
+    col-between: 1s;
+    /* border-width: 1px;
+    border-color: red; */
+}
+.close_knobs {
+    width: 1s;
+    /* left: 5px;
+    right: 5px; */
+    child-space: 1s;
+    /* child-space: 1 */
+    /* col-between: 0.1s; */
+    col-between: 10px;
+}
+
+.fm_markers {
+    child-space: 1s;
+    border-width: 1px;
+    border-color: #28282b;
+    background-color: #000000;
+}
+.fm_knobs {
+    border-width: 1px;
+    border-color: #28282b;
+    /* border-color: white; */
+}
+.selector {
+    width: 250px;
+    height: auto;
+    child-space: 1s;
+    col-between: 10px;
+}
+
+
+.waveform {
+    height: 200px;
+    /* width: 256px; */
+    width: 1s;
+    color: #ffb74d;
+    child-space: 1s;
+    border-width: 1px;
+    border-color: white;
+    background-color: #101010;
+}
+
+.style {
+    height: 400px;
+    /* width: 256px; */
+    width: 1s;
+    color: #ffb74d;
+    child-space: 1s;
+    border-width: 1px;
+    border-color: white;
+    background-color: #101010;
+}
+.pitch_field {
+    width: 1s;
+    border-width: 1px;
+    border-color: #28282b;
+    background-color: #000000;
+    /* border-color: white; */
+    col-between: 10px;
+}
+
+dropdown .title {
+    /* background-color: #101010; */
+    /* height: 30px; */
+    width: 200px;
+    child-left: 5px;
+    child-right: 5px;
+    child-top: 1s;
+    child-bottom: 1s;
+    col-between: 5px;
+    color: #C2C2C2;
+}
+dropdown>button {
+    width: 200px;
+    background-color: #101010;
+
+}
+dropdown .title label {
+    color: #C2C2C2;
+}
+/* color of the buttons on the list that pops up */
+dropdown list label {
+    color: #C2C2C2;
+    border-width: 1px;
+    border-color: #756e6e;
+}
+dropdown .item:checked {
+    background-color: #c28919;
+}
+dropdown .item {
+    /* background-color: white; */
+}
+
+dropdown .item:hover {
+    background-color: #b18110;
+}
+
+
+dropdown .arrow {
+    font: "icons";
+    top: 1s;
+    bottom: 1s;
+    left: 1s;
+    color: #C2C2C2;
+}
+
+dropdown>popup {
+    background-color: #141414;
+    left: 1s;
+    right: 1s;
+    color: #C2C2C2;
+}
+
+dropdown>popup>list {
+    width: 200px;
+}
+
+button {
+    width: auto;
+    height: auto;
+    child-space: 5px;
+    background-color: #101010;
+    border-width: 1px;
+    border-color: #756e6e;
+    color: #C2C2C2;
+}
+/* TODO: Does this work? */
+button:checked {
+    background-color: #c28919;
+}
+/* button:hover {
+    background-color: #101010;
+} */
+
+button label {
+    font-size: 16;
+    color: #C2C2C2;
+    height: 20px;
+    child-top: 1s;
+    child-bottom: 1s;
+}
+label {
+    font-size: 16;
+    color: #C2C2C2;
+    height: 20px;
+    child-top: 1s;
+    child-bottom: 1s;
+}
+/* seems like this does nothing atm */
+small_label {
+    font-size: 10;
+    color: #C2C2C2;
+    /* height: 20px; */
+    child-top: 1s;
+    child-bottom: 1s;
+}
+.blue_label {
+    /* color: blue; */
+    color: #1c8396;
+}
+.ghost_label {
+    font-size: 14;
+    /* color: #C2C2C2; */
+    color: aqua;
+    /* height: 20px; */
+    /* child-top: 1s;
+    child-bottom: 1s; */
+    background-color: #101010;
+    border-width: 1px;
+    border-color: #C2C2C2;
+}
+.small_on_off {
+    min-height: 0px;
+    min-width: 0px;
+    height: 15px;
+    width: 15px;
+}
+
+knob {
+    width: 35px;
+    height: 35px;
+}
+knob .tick {
+    background-color: #eeece4be;
+}
+knob .track {
+    background-color: #ffb74d;
+}

@@ -1,0 +1,28 @@
+[package]
+name = "sampler"
+version = "0.1.0"
+edition = "2021"
+authors = ["Fredemus <frederik.halkjaer1@gmail.com>"]
+[lib]
+name = "sampler"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+[[bin]]
+name = "sampler_standalone"
+path = "src/bin.rs"
+
+[dependencies]
+nih_plug = { git = "https://github.com/robbert-vdh/nih-plug", features = ["assert_process_allocs"] }
+baseview = { git = "https://github.com/RustAudio/baseview.git", rev = "b3712638bacb3fdf2883cb5aa3f6caed0e91ac8c"} # newest
+vizia = {git = "https://github.com/vizia/vizia.git", rev = "0c3451e09f28ff0bb1f6836d3a1e9192862e5dfe", features = ["baseview"], default-features = false}
+femtovg = {version = "0.3.0", default-features = false}
+raw-window-handle = "0.3.3"
+# wav saving/loading
+hound = "3.4.0"
+
+# file stuff
+dirs = "2.0.2"
+lazy_static = "1.4.0"
+
+[workspace]
+members = ["xtask"]
