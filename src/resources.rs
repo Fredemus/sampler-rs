@@ -5,13 +5,7 @@ use hound::{self, WavReader};
 use lazy_static::lazy_static;
 use std::fmt;
 
-// use std::path::Path;
-// const FOLDER_PATH: &str = r"C:\Users\rasmu\Documents\RustProjects\Bac-synth\resources\";
 const FOLDER_PATH: &str = r"Documents/sampler-rs/";
-// const FOLDER_PATH: PathBuf = PathBuf::from(r"Documents/BacSynth/");
-
-// use simplelog::*;
-// #[derive(Clone, Debug)]
 
 // SampleName is just a wrapper around a PathBuf, so we can use it with Vizia (needs to impl a Data trait to be lensed)
 #[derive(Clone, Debug)]

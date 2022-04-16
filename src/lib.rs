@@ -1,5 +1,5 @@
 #![feature(portable_simd)]
-use nih_plug::{nih_export_vst3, prelude::*};
+use nih_plug::prelude::*;
 use std::sync::Arc;
 use voice::Voice;
 
@@ -32,8 +32,6 @@ impl<'a> Plug<'a> {
                 // if there are more notes left, toss one of them into the voice
                 // TODO: If we switch to last_note dropping, we could probably extend this to working in poly mode
                 if self.params.mono.value() == OnOff::On && !self.pressed_notes.is_empty() {
-                    // TODO: It might be of interest to keep velocity with pressed_notes? Instead of using old velocity
-                    // let old_velocity = (self.voices[i].mod_matrix.velocity * 127.) as u8;
                     self.trigger_voice(
                         self.pressed_notes[0],
                         // self.params.legato.value() == OnOff::On,
@@ -54,8 +52,6 @@ impl<'a> Plug<'a> {
         if let Some(pos) = self.pressed_notes.iter().position(|x| x == &note) {
             self.pressed_notes.swap_remove(pos);
         }
-        // TODO: Does pressed_notes need to be a deque so we can push in front and pop from back?
-        // would help with knowing which note to switch back to in case more than 8 are playing
         self.pressed_notes.push(note);
         // let legato = self.params.legato.value() == OnOff::On;
         let legato = false;

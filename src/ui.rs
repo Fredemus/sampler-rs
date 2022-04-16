@@ -41,15 +41,11 @@ where
     F: 'static + Fn(&Arc<SamplerParams>) -> &P + Copy,
     // L: Lens<Target = ParamPtr>,
 {
-    // let context = UiData::gui_context.get(cx);
-    // let setter = ParamSetter::new(context.as_ref());
     // create binding in the context for whether to render the parameter value
     VStack::new(cx, move |cx| {
         if cx.data::<LabelData>().is_none() {
             LabelData { visible: false }.build(cx);
         }
-        // Binding::new(cx, UiData::params, move |cx, state| {
-        // Label::new(cx, &state.get(cx).params.get_parameter_name(param_index))
         Label::new(cx, name).class("small_label");
         Knob::custom(
             cx,
@@ -81,7 +77,7 @@ where
             },
         )
         .on_changing(move |cx, val| {
-            cx.emit(UiEvent::AllParams(param_ptr, val));
+            cx.emit(UiEvent::SetParam(param_ptr, val));
         })
         .on_press(move |cx| {
             cx.emit(LabelEvent::Show(true));
@@ -147,7 +143,7 @@ pub struct UiData {
 }
 #[derive(Debug)]
 pub enum UiEvent {
-    AllParams(ParamPtr, f32),
+    SetParam(ParamPtr, f32),
     BeginSet(ParamPtr),
     EndSet(ParamPtr),
     ToggleParam(ParamPtr),
@@ -165,8 +161,7 @@ impl Model for UiData {
     fn event(&mut self, _cx: &mut Context, event: &mut Event) {
         if let Some(param_change_event) = event.message.downcast() {
             match param_change_event {
-                // TODO: Rename to SetParam
-                UiEvent::AllParams(param_ptr, new_value) => {
+                UiEvent::SetParam(param_ptr, new_value) => {
                     unsafe {
                         self.gui_context
                             .raw_set_parameter_normalized(*param_ptr, *new_value)
@@ -183,8 +178,6 @@ impl Model for UiData {
                     unsafe { self.gui_context.raw_begin_set_parameter(*param_ptr) };
                     let norm_val = unsafe { param_ptr.normalized_value() };
                     let new_value = if norm_val > 0. { 0. } else { 1. };
-                    // println!("param is {norm_val}");
-                    // println!("Setting param to {new_value}");
                     unsafe {
                         self.gui_context
                             .raw_set_parameter_normalized(*param_ptr, new_value)
@@ -196,7 +189,6 @@ impl Model for UiData {
                     // println!("loading sample {}", table);
                     *self.params.sample_name.write().unwrap() = table.clone();
                     self.params.source_changed.set_release(true);
-                    // self.params.load_sample();
                 }
             }
         }

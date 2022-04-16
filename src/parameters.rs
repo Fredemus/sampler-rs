@@ -14,8 +14,6 @@ pub struct SamplerParams {
     pub mono: EnumParam<OnOff>,
 
     pub pitch_changed: Arc<AtomicBool>,
-    // TODO: Octave should be some kind of signed integer
-    // pub octave: ParameterUsize,
     #[id = "sampler root"]
     pub root: IntParam,
     #[id = "sampler fine tune"]
@@ -33,8 +31,7 @@ pub struct SamplerParams {
     pub end: FloatParam,
     #[id = "sampler looping"]
     pub is_looping: EnumParam<OnOff>,
-    // these 2 are used for interpolation
-    // TODO: Find a way not to have this? Possibly unnecessary copy
+    // the audio data for the sampler
     pub source: RwLock<Vec<f32>>,
     pub source_changed: AtomicBool,
     #[id = "sampler on/off"]

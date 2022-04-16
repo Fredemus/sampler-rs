@@ -12,7 +12,6 @@ pub struct Voice {
 }
 impl Voice {
     pub fn new() -> Voice {
-        // let filter = ModellingFilter::new(params.filter_p.clone());
         Voice {
             is_on: false,
             current_note: 0,
@@ -20,7 +19,6 @@ impl Voice {
             target_notepitch: 0.,
             increment: 0.,
             sampler_phase: 0.,
-            // phases: [f32x8::splat(0.); 4],
         }
     }
     pub fn update_pitch(&mut self) -> bool {
@@ -29,7 +27,6 @@ impl Voice {
         self.current_notepitch == self.target_notepitch {
             false
         } else {
-            // TODO: When should the current_notepitch stop updating?
             if self.increment > 0. {
                 self.current_notepitch = (self.current_notepitch + self.increment)
                     .clamp(self.current_notepitch, self.target_notepitch);
@@ -44,5 +41,4 @@ impl Voice {
     pub fn release(&mut self) {
         self.is_on = false;
     }
-    // fn set_pitch(&self, new_pitch)
 }

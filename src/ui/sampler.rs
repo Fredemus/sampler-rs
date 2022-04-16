@@ -152,7 +152,7 @@ fn make_pitch_field<'a, P, F>(
         },
     )
     .on_changing(move |cx, val| {
-        cx.emit(UiEvent::AllParams(param_ptr, val));
+        cx.emit(UiEvent::SetParam(param_ptr, val));
     })
     .height(Pixels(20.))
     .width(width);
