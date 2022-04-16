@@ -1,4 +1,5 @@
 #![feature(portable_simd)]
+use halfband::HalfbandFilter;
 use nih_plug::prelude::*;
 use std::sync::Arc;
 use voice::Voice;
@@ -10,8 +11,8 @@ pub mod utils;
 use parameters::{OnOff, SamplerParams};
 mod ui;
 
+mod halfband;
 mod resources;
-
 mod voice;
 
 pub struct Plug<'a> {
@@ -21,6 +22,7 @@ pub struct Plug<'a> {
     sample_rate: f32,
     pressed_notes: Vec<u8>,
     voices: Vec<Voice>,
+    halfband: [HalfbandFilter; 2],
 }
 
 impl<'a> Plug<'a> {
@@ -128,6 +130,7 @@ impl<'a> Default for Plug<'a> {
             sample_rate: 48000.,
             voices: vec![Voice::new(); 8],
             pressed_notes: vec![],
+            halfband: [HalfbandFilter::new(12, true), HalfbandFilter::new(12, true)],
         }
     }
 }
@@ -205,20 +208,30 @@ impl Plugin for Plug<'static> {
             // if sample_id == midi_queue[0
 
             // self.engine.params.update_smootheds();
-            let mut summed_output = [0.; 2];
-            for i in 0..self.voices.len() {
-                if self.voices[i].is_on {
-                    let output =
-                        self.sampler
-                            .process(i, &mut self.voices[i].sampler_phase, &self.params);
-                    summed_output[0] += output[0];
-                    summed_output[1] += output[1];
+            // oversampling for loop
+            let mut out = [0.; 2];
+            for _i in 0..2 {
+                let mut voices_out = [0.; 2];
+                for i in 0..self.voices.len() {
+                    if self.voices[i].is_on {
+                        let sampler_out = self.sampler.process(
+                            i,
+                            &mut self.voices[i].sampler_phase,
+                            &self.params,
+                        );
+                        voices_out[0] += sampler_out[0];
+                        voices_out[1] += sampler_out[1];
+                    }
                 }
+                // Filter the output of the samplers to avoid aliasing
+                out[0] = self.halfband[0].process(voices_out[0]);
+                out[1] = self.halfband[1].process(voices_out[1]);
             }
+
             // let frame_out = *output.as_array();
 
-            *channel_samples.get_mut(0).unwrap() = summed_output[0];
-            *channel_samples.get_mut(1).unwrap() = summed_output[1];
+            *channel_samples.get_mut(0).unwrap() = out[0];
+            *channel_samples.get_mut(1).unwrap() = out[1];
         }
 
         ProcessStatus::Normal
@@ -239,9 +252,9 @@ impl ClapPlugin for Plug<'static> {
 }
 nih_export_clap!(Plug<'static>);
 // Comment this in if you want a vst3
-// impl Vst3Plugin for Plug<'static> {
-//     const VST3_CLASS_ID: [u8; 16] = *b"Sampler-rs      ";
-//     const VST3_CATEGORIES: &'static str = "Instrument|Synth";
-// }
+impl Vst3Plugin for Plug<'static> {
+    const VST3_CLASS_ID: [u8; 16] = *b"Sampler-rs      ";
+    const VST3_CATEGORIES: &'static str = "Instrument|Synth";
+}
 
-// nih_export_vst3!(Plug);
+nih_export_vst3!(Plug);
