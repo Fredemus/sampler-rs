@@ -64,11 +64,15 @@ pub fn draw_sampler_gui(cx: &mut Context) -> Handle<VStack> {
                 HStack::new(cx, move |cx| {
                     draw_on_off_button(cx, params.keytrack.as_ptr()).class("small_on_off");
                     Label::new(cx, "Keytrack");
-                });
-                // HStack::new(cx, move |cx| {
-                //     draw_on_off_button(cx, params.is_looping.as_ptr()).class("small_on_off");
-                //     Label::new(cx, "Loop");
-                // });
+                })
+                .child_bottom(Stretch(1.))
+                .child_top(Stretch(1.));
+                HStack::new(cx, move |cx| {
+                    draw_on_off_button(cx, params.is_looping.as_ptr()).class("small_on_off");
+                    Label::new(cx, "Loop");
+                })
+                .child_bottom(Stretch(1.))
+                .child_top(Stretch(1.));
             });
         })
         .top(Pixels(0.))

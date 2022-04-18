@@ -24,7 +24,8 @@ pub struct Sampler<'a> {
     ratios: [f32; N_VOICES],
     // phase_incs: [f32; N_VOICES],
     current_mip: [usize; N_VOICES],
-    // prolly want total_mips too
+    // for one-shotting the sample
+    pub is_done: [bool; N_VOICES],
 }
 
 impl<'a> Sampler<'a> {
@@ -38,6 +39,7 @@ impl<'a> Sampler<'a> {
             // phase_incs: [0.; N_VOICES],
             ratios: [0.; N_VOICES],
             current_mip: [0; N_VOICES],
+            is_done: [true; N_VOICES],
         }
     }
     // TODO: Divide total_pitch by 2.powi(current_mip) most likely, if get_sample doesn't use pitch anywhere else
@@ -97,10 +99,10 @@ impl<'a> Sampler<'a> {
         self.current_mip[idx] = current_mip;
     }
     pub fn process(&mut self, voice_n: usize, phase: &mut f32, params: &SamplerParams) -> [f32; 2] {
-        if params.is_on.value() == OnOff::On {
-            self.get_sample(voice_n, phase, params)
-        } else {
+        if params.is_on.value() == OnOff::Off || self.is_done[voice_n] {
             [0.; 2]
+        } else {
+            self.get_sample(voice_n, phase, params)
         }
     }
 
@@ -155,6 +157,9 @@ impl<'a> Sampler<'a> {
         // if the voice's phase moves outside of the correct wave, loop back around to the start
         while *phase + params.pos.value > 1. {
             *phase -= 1. - params.pos.value;
+            if params.is_looping.value() == OnOff::Off {
+                self.is_done[voice_n] = true;
+            }
         }
         output
     }

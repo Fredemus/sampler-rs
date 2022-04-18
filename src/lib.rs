@@ -115,6 +115,7 @@ impl<'a> Plug<'a> {
         }
         self.sampler
             .voice_pitch_changed(&self.params, &self.voices, voice_n);
+        self.sampler.is_done[voice_n] = false;
     }
 }
 
@@ -252,9 +253,9 @@ impl ClapPlugin for Plug<'static> {
 }
 nih_export_clap!(Plug<'static>);
 // Comment this in if you want a vst3
-impl Vst3Plugin for Plug<'static> {
-    const VST3_CLASS_ID: [u8; 16] = *b"Sampler-rs      ";
-    const VST3_CATEGORIES: &'static str = "Instrument|Synth";
-}
+// impl Vst3Plugin for Plug<'static> {
+//     const VST3_CLASS_ID: [u8; 16] = *b"Sampler-rs      ";
+//     const VST3_CATEGORIES: &'static str = "Instrument|Synth";
+// }
 
-nih_export_vst3!(Plug);
+// nih_export_vst3!(Plug);
